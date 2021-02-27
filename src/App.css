@@ -1,15 +1,42 @@
+body {
+  background-color: rgb(218, 243, 241);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 14rem;
+  height: 20rem;
+  margin: auto;
+  justify-content: space-evenly;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 6px;
+}
+
+form > div {
+  display: flex;
+}
+
 .todo-list {
   display: flex;
   flex-flow: row wrap;
   list-style-type: none;
-  justify-content: space-between;
+  justify-content: space-evenly;
   width: 90%;
+  margin-top: 3rem;
+  /* padding-inline-start: 0; */
 }
 
 .todo-item {
   width: 14rem;
-  height: 8rem;
-  box-shadow: 0 20px 20px -10px gray;
+  height: 10rem;
+  box-shadow: 0 20px 20px -10px rgb(153, 243, 236);;
   text-align: center;
   border-radius: 6px;
+  background-color: white;
+}
+
+.delete-button {
+  background-color: rgb(255, 93, 93);
 }
