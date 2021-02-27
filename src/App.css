@@ -47,3 +47,8 @@ form > div {
   color: white;
   margin-left: 2rem;
 }
+
+.close-button {
+  background-color: rgb(0, 138, 124);
+  color: white;
+}

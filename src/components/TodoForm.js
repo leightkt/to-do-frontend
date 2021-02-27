@@ -69,6 +69,7 @@ class TodoForm extends Component {
                 </div>
                 {this.showDoneCheckbox()}
                 <input type="submit" />
+                { this.props.todo ? <button className="close-button" onClick={this.props.handleToggle}>CLOSE FORM</button> : null }
             </form>
         )
     }

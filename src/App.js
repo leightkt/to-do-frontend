@@ -4,6 +4,7 @@ import { Component } from 'react'
 
 import TodoContainer from './containters/TodoContainer';
 import TodoForm from './components/TodoForm';
+import { patchTodo, postTodo, deleteTodo } from './helpers'
 
 const backendURL = `http://localhost:9000`
 const todoURL = `${backendURL}/todos`
@@ -22,7 +23,7 @@ class App extends Component {
   getTodos = () => {
     fetch(todoURL)
       .then(response => response.json())
-      .then(todos => this.setState({todos}))
+      .then(todos => this.setState({ todos }))
   }
 
   addTodo = (newTodo) => {
@@ -30,28 +31,14 @@ class App extends Component {
       todos: [...this.state.todos, newTodo]
     })
 
-    fetch(todoURL, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ todo: newTodo })
-    })
+    postTodo(newTodo, todoURL)
   }
 
   updateTodo = (updatedTodo) => {
     let todos = this.state.todos.map(todo => todo.id === updatedTodo.id ? updatedTodo : todo)
     this.setState({ todos })
 
-    fetch(`${todoURL}/${updatedTodo.id}`, {
-      method: "PATCH",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ todo: updatedTodo })
-    })
+    patchTodo(updatedTodo, todoURL)
   }
 
   deleteTodo = (id) => {
@@ -60,9 +47,7 @@ class App extends Component {
       todos: filtered
     })
 
-    fetch(`${todoURL}/${id}`, {
-      method: "DELETE"
-    })
+    deleteTodo(id, todoURL)
   }
 
   render() {
