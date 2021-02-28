@@ -12,6 +12,7 @@ form {
   background-color: white;
   padding: 2rem;
   border-radius: 6px;
+  margin-bottom: 2rem;
 }
 
 form > div {
@@ -51,4 +52,8 @@ form > div {
 .close-button {
   background-color: rgb(0, 138, 124);
   color: white;
+}
+
+form > p {
+  color: rgb(195, 13, 13);
 }
