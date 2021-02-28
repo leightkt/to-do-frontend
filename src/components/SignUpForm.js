@@ -13,6 +13,7 @@ export default function SignUpForm(props) {
 
         props.signUp(user)
             .then(() => props.history.push('/'))
+            // push new route- push path into browser history. adds to history and navigates to it
     }
 
     const handleChange = ({ target }) => {

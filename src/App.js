@@ -4,7 +4,7 @@ import { Component } from 'react'
 
 import { patchTodo, postTodo, deleteTodo } from './helpers'
 import SignUpForm from './components/SignUpForm';
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import PrivateRoute from './components/PrivateRoute'
 import Home from './components/Home';
 
@@ -100,6 +100,8 @@ class App extends Component {
           // pass down history, location and match
           />}
           }/>
+          <Redirect to="/" />
+          {/* if someone tries to type in a path that doesn't exit- gets redirected homez */}
         </Switch>
         
       </div>
