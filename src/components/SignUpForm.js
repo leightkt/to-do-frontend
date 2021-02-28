@@ -12,6 +12,7 @@ export default function SignUpForm(props) {
         }
 
         props.signUp(user)
+            .then(() => props.history.push('/'))
     }
 
     const handleChange = ({ target }) => {

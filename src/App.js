@@ -2,10 +2,11 @@ import './App.css';
 
 import { Component } from 'react'
 
-import TodoContainer from './containters/TodoContainer';
-import TodoForm from './components/TodoForm';
 import { patchTodo, postTodo, deleteTodo } from './helpers'
 import SignUpForm from './components/SignUpForm';
+import { Route, Switch } from 'react-router-dom'
+import PrivateRoute from './components/PrivateRoute'
+import Home from './components/Home';
 
 const backendURL = `http://localhost:9000`
 const todoURL = `${backendURL}/todos`
@@ -54,7 +55,8 @@ class App extends Component {
   }
 
   signUp = (user) => {
-    fetch('http://localhost:9000/users', {
+    // return the fetch so you can .then off of it (make it a promise)
+    return fetch('http://localhost:9000/users', {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -80,9 +82,26 @@ class App extends Component {
     return (
       <div className="App">
         <h1>Todo App</h1>
-        <SignUpForm signUp={this.signUp} alerts={this.state.alerts}/>
-        <TodoForm submitAction={this.addTodo}/>
-        <TodoContainer todos={this.state.todos} deleteTodo={this.deleteTodo} updateTodo={this.updateTodo}/>
+        <Switch>
+          <PrivateRoute 
+          exact
+          path="/" 
+          component={Home}
+          submitAction={this.addTodo}
+          updateTodo={this.updateTodo}
+          deleteTodo={this.deleteTodo}
+          todos={this.state.todos} />
+          {/* Can change route and component allows private route to lock down multiple pages*/}
+          <Route exact path="/signup" render={(routerProps) => {
+          return <SignUpForm 
+          signUp={this.signUp} 
+          alerts={this.state.alerts}
+          {...routerProps}
+          // pass down history, location and match
+          />}
+          }/>
+        </Switch>
+        
       </div>
     );
   }
