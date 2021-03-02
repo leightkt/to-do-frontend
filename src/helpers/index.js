@@ -4,7 +4,8 @@ export function patchTodo(updatedTodo, todoURL) {
         method: "PATCH",
         headers: {
             Accept: "application/json",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.token}`
         },
         body: JSON.stringify({ todo: updatedTodo })
     })
@@ -24,6 +25,9 @@ export function postTodo(newTodo, todoURL, user) {
 
 export function deleteTodo(id, todoURL) {
     fetch(`${todoURL}/${id}`, {
-        method: "DELETE"
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${localStorage.token}`
+        }
     })
 }
