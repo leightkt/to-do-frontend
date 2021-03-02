@@ -57,3 +57,14 @@ form > div {
 form > p {
   color: rgb(195, 13, 13);
 }
+
+header { 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  text-align: center;
+}

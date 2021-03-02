@@ -4,7 +4,7 @@ import { Component } from 'react'
 
 import { patchTodo, postTodo, deleteTodo } from './helpers'
 import SignUpForm from './components/SignUpForm';
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Switch, Redirect, Link } from 'react-router-dom'
 import PrivateRoute from './components/PrivateRoute'
 import Home from './components/Home';
 
@@ -21,13 +21,23 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.getTodos()
+    this.authorize_user()
   }
 
-  getTodos = () => {
-    fetch(todoURL)
+  authorize_user = () => {
+    fetch(`${backendURL}/profile`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${localStorage.token}`
+      }
+    })
       .then(response => response.json())
-      .then(todos => this.setState({ todos }))
+      .then(response => {
+        this.setState({
+          user: response.user,
+          todos: response.todos
+        })
+      })
   }
 
   addTodo = (newTodo) => {
@@ -35,7 +45,7 @@ class App extends Component {
       todos: [...this.state.todos, newTodo]
     })
 
-    postTodo(newTodo, todoURL)
+    postTodo(newTodo, todoURL, this.state.user)
   }
 
   updateTodo = (updatedTodo) => {
@@ -52,6 +62,30 @@ class App extends Component {
     })
 
     deleteTodo(id, todoURL)
+  }
+
+  login = ({ username, password }) => {
+    return fetch(`${backendURL}/login`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ username, password })
+    })
+      .then(response => response.json())
+      .then(result => {
+        if (result.errors){
+          this.setState({ alerts: result.errors })
+        } else {
+          localStorage.setItem('token', result.token)
+          this.setState({ 
+            user: result.user,
+            alerts: ["Successful Login"] ,
+            todos: result.todos
+          })
+        }
+      })
   }
 
   signUp = (user) => {
@@ -72,7 +106,8 @@ class App extends Component {
             localStorage.setItem('token', result.token)
             this.setState({ 
               user: result.user,
-              alerts: ["User successfully created"] 
+              alerts: ["User successfully created"],
+              todos: result.todos 
             })
           }
         })
@@ -81,6 +116,18 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <header>
+          { this.state.user.username 
+            ? ( 
+              <>
+                <p>Welcome Back {this.state.user.username}</p> 
+                <nav>
+                  <Link to="/signup">LOG OUT</Link>
+                </nav>
+              </>
+            )
+            : null }
+        </header>
         <h1>Todo App</h1>
         <Switch>
           <PrivateRoute 
@@ -96,6 +143,7 @@ class App extends Component {
           return <SignUpForm 
           signUp={this.signUp} 
           alerts={this.state.alerts}
+          login={this.login}
           {...routerProps}
           // pass down history, location and match
           />}

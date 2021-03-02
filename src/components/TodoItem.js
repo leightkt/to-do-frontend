@@ -9,7 +9,7 @@ export default function TodoItem({ id, title, content, urgent, done, deleteTodo,
     const handleClick = (event) => deleteTodo(id)
     const handleToggle = () => setIsToggled(!isToggled)
     const todoCard = () => {
-        return (<li className="todo-item">
+        return (<li className="todo-item" key={ id }>
             <h2>{title}</h2>
             <h3>{content}</h3>
             <button className="delete-button" onClick={handleClick}>DELETE</button>
